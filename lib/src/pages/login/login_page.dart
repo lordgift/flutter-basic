@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/pages/login/background_theme.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -9,11 +10,8 @@ class LoginPage extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Color(0xFF36D1DC), Color(0xff5b86e5)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [0.0, 1.0])),
+                gradient: BackGroundTheme.gradient
+            ),
           ),
           SingleChildScrollView(
             child: Column(
