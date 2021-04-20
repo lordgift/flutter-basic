@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/config/app_route.dart';
 import 'package:flutter_app/src/pages/login/background_theme.dart';
 import 'package:flutter_app/src/view_models/SSOViewModel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatelessWidget {
-
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -70,6 +70,7 @@ class LoginPage extends StatelessWidget {
 
                           if (username == "user" && password == "1234") {
                             print("login ok");
+                            Navigator.pushNamed(context, AppRoute.homeRoute);
                           } else {
                             print("Invalid password");
                           }
@@ -149,6 +150,7 @@ class SSOButton extends StatelessWidget {
           children: SSOViewModel()
               .item
               .map((e) => FloatingActionButton(
+                    heroTag: e.backgroundColor.toString(),
                     onPressed: () {},
                     child: FaIcon(e.icon),
                     backgroundColor: e.backgroundColor,
