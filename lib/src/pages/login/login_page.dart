@@ -4,12 +4,27 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
+        fit: StackFit.expand,
         children: [
-          Text('Header'),
-          Text('Login'),
-          Text('forget button'),
-          Text('sso')
+          Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Color(0xFF36D1DC), Color(0xff5b86e5)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.0, 1.0])),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('Header'),
+              Text('Login'),
+              Text('forget button'),
+              Text('sso')
+            ],
+          )
         ],
       ),
     );
