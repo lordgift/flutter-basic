@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/pages/login/background_theme.dart';
+import 'package:flutter_app/src/view_models/SSOViewModel.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -65,6 +66,9 @@ class LoginPage extends StatelessWidget {
                   ),
                 ]),
                 _buildTextButton("forget password", onPressed: () {}),
+                Row(children:
+                  SSOViewModel().item.map((e) => Text('')).toList()
+                ),
                 _buildTextButton("register", onPressed: () {}),
               ],
             ),
