@@ -4,6 +4,10 @@ import 'package:flutter_app/src/view_models/SSOViewModel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatelessWidget {
+
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +43,7 @@ class LoginPage extends StatelessWidget {
                                 hintText: "User",
                                 labelText: "User",
                                 icon: Icon(Icons.person)),
+                            controller: _usernameController,
                           ),
                           Divider(height: 28, indent: 22, endIndent: 22),
                           TextField(
@@ -46,6 +51,7 @@ class LoginPage extends StatelessWidget {
                                 hintText: "Password",
                                 labelText: "Password",
                                 icon: Icon(Icons.lock)),
+                            controller: _passwordController,
                           )
                         ],
                       ),
