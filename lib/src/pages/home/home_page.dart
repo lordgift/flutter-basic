@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/config/app_route.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      drawer: CommonDrawer(),
       appBar: AppBar(
         title: Text('Home'),
       ),
@@ -46,6 +47,30 @@ class _HomePageState extends State<HomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class CommonDrawer extends StatelessWidget {
+  const CommonDrawer({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: [
+          Spacer(),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamedAndRemoveUntil(context, AppRoute.loginRoute, (route) => false);
+            },
+            leading: Icon(Icons.exit_to_app),
+            title: Text("Logout"),
+          )
+        ],
+      ),
     );
   }
 }
