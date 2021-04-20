@@ -19,6 +19,7 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Image.asset("assets/images/flutter.png"),
               Text('Header'),
               Text('Login'),
               Text('forget button'),
