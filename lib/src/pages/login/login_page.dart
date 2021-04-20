@@ -56,7 +56,9 @@ class LoginPage extends StatelessWidget {
                     width: 280,
                     height: 52,
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          print('login clicked!!');
+                        },
                         child: Text(
                           'Login',
                           style: TextStyle(
