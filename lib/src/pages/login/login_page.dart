@@ -51,6 +51,7 @@ class LoginPage extends StatelessWidget {
                                 hintText: "Password",
                                 labelText: "Password",
                                 icon: Icon(Icons.lock)),
+                            obscureText: true,
                             controller: _passwordController,
                           )
                         ],
