@@ -18,5 +18,6 @@ samples, guidance on mobile development, and a full API reference.
 
 :: Note ::
 
-Stateless : not-redraw
-Stateful : redraw
+- Stateless : not-redraw
+- Stateful : redraw
+- ```const``` : make component not redraw
