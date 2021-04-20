@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/pages/login/background_theme.dart';
 import 'package:flutter_app/src/view_models/SSOViewModel.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -66,9 +67,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ]),
                 _buildTextButton("forget password", onPressed: () {}),
-                Row(children:
-                  SSOViewModel().item.map((e) => Text('')).toList()
-                ),
+                SSOButton(),
                 _buildTextButton("register", onPressed: () {}),
               ],
             ),
@@ -115,6 +114,29 @@ class LoginPage extends StatelessWidget {
         end: const FractionalOffset(1.0, 1.0),
         stops: [0.0, 1.0],
       ),
+    );
+  }
+}
+
+class SSOButton extends StatelessWidget {
+  const SSOButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 22),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: SSOViewModel()
+              .item
+              .map((e) => FloatingActionButton(
+                    onPressed: () {},
+                    child: FaIcon(e.icon),
+                    backgroundColor: e.backgroundColor,
+                  ))
+              .toList()),
     );
   }
 }
