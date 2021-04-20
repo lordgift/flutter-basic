@@ -64,6 +64,14 @@ class LoginPage extends StatelessWidget {
                     child: TextButton(
                         onPressed: () {
                           print('login clicked!!');
+                          final username = _usernameController.text;
+                          final password = _passwordController.text;
+
+                          if (username == "user" && password == "1234") {
+                            print("login ok");
+                          } else {
+                            print("Invalid password");
+                          }
                         },
                         child: Text(
                           'Login',
