@@ -37,6 +37,11 @@ class LoginPage extends StatelessWidget {
                           labelText: "Email",
                           icon: Icon(Icons.email)),
                     ),
+                    Divider(
+                      height: 28,
+                      indent: 22,
+                      endIndent: 22
+                    ),
                     TextField(
                       decoration: InputDecoration(
                           hintText: "Name",
