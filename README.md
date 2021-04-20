@@ -23,3 +23,5 @@ samples, guidance on mobile development, and a full API reference.
 - ```const``` : make component not redraw
 - ```_``` : variable name start with _ mean to private variable
 - ```=>``` : arrow sign mean return
+- ```onPressed``` : if no function assigned, it'll automatic disable state.
+- use ```{}``` cover arguments for optional argument(s)

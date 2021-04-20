@@ -9,9 +9,7 @@ class LoginPage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Container(
-            decoration: BoxDecoration(
-                gradient: BackGroundTheme.gradient
-            ),
+            decoration: BoxDecoration(gradient: BackGroundTheme.gradient),
           ),
           SingleChildScrollView(
             child: Column(
@@ -27,11 +25,11 @@ class LoginPage extends StatelessWidget {
                 ),
                 Stack(alignment: Alignment.bottomCenter, children: [
                   Card(
-                    margin:
-                        EdgeInsets.only(left: 22, top: 22, right: 22, bottom: 62),
+                    margin: EdgeInsets.only(
+                        left: 22, top: 22, right: 22, bottom: 24),
                     child: Padding(
                       padding: EdgeInsets.only(
-                          left: 22, top: 22, right: 22, bottom: 24),
+                          left: 22, top: 22, right: 22, bottom: 62),
                       child: Column(
                         children: [
                           TextField(
@@ -60,14 +58,14 @@ class LoginPage extends StatelessWidget {
                         child: Text(
                           'Login',
                           style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold),
                         )),
                   ),
                 ]),
-                Text('Header'),
-                Text('Login'),
-                Text('forget button'),
-                Text('sso')
+                _buildTextButton("forget password", onPressed: () {}),
+                _buildTextButton("register", onPressed: () {}),
               ],
             ),
           )
@@ -75,15 +73,28 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+
+  Container _buildTextButton(String text, {VoidCallback onPressed}) {
+    return Container(
+      child: TextButton(
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.white70),
+        ),
+        onPressed: onPressed,
+      ),
+    );
+  }
+
   BoxDecoration _boxDecoration() {
     final gradientStart = BackGroundTheme().gradientStart;
     final gradientEnd = BackGroundTheme().gradientEnd;
 
     final boxShadowItem = (Color color) => BoxShadow(
-      color: color,
-      offset: Offset(1.0, 6.0),
-      blurRadius: 20.0,
-    );
+          color: color,
+          offset: Offset(1.0, 6.0),
+          blurRadius: 20.0,
+        );
 
     return BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(15.0)),
