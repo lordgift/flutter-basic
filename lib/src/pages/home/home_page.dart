@@ -61,10 +61,18 @@ class CommonDrawer extends StatelessWidget {
     return Drawer(
       child: Column(
         children: [
+          UserAccountsDrawerHeader(
+            accountName: Text("Me"),
+            accountEmail: Text("me@mail.com"),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/flutter.png'),
+            ),
+          ),
           Spacer(),
           ListTile(
             onTap: () {
-              Navigator.pushNamedAndRemoveUntil(context, AppRoute.loginRoute, (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AppRoute.loginRoute, (route) => false);
             },
             leading: Icon(Icons.exit_to_app),
             title: Text("Logout"),

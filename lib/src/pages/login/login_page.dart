@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_route.dart';
 import 'package:flutter_app/src/pages/login/background_theme.dart';
-import 'package:flutter_app/src/view_models/SSOViewModel.dart';
+import 'package:flutter_app/src/view_models/sso_viewmodel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatelessWidget {
@@ -68,9 +68,9 @@ class LoginPage extends StatelessWidget {
                           final username = _usernameController.text;
                           final password = _passwordController.text;
 
-                          if (username == "user" && password == "1234") {
+                          if (username == "" && password == "") {
                             print("login ok");
-                            Navigator.pushNamed(context, AppRoute.homeRoute);
+                            Navigator.pushReplacementNamed(context, AppRoute.homeRoute);
                           } else {
                             print("Invalid password");
                           }
