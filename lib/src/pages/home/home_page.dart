@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_route.dart';
+import 'package:flutter_app/src/view_models/menu_viewmodel.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -68,6 +69,15 @@ class CommonDrawer extends StatelessWidget {
               backgroundImage: AssetImage('assets/images/flutter.png'),
             ),
           ),
+          ...MenuViewModel().items.map((e) => ListTile(
+            onTap: (){
+              e.onTap(context);
+            },
+            leading: Icon(
+              e.icon,
+              color: e.iconColor,
+            ),
+          )),
           Spacer(),
           ListTile(
             onTap: () {
