@@ -19,7 +19,33 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset("assets/images/flutter.png"),
+              SizedBox(
+                height: 48,
+              ),
+              Image.asset(
+                "assets/images/flutter.png",
+                width: 300,
+              ),
+              Card(
+                margin:
+                    EdgeInsets.only(left: 22, top: 22, right: 22, bottom: 62),
+                child: Column(
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                          hintText: "Email",
+                          labelText: "Email",
+                          icon: Icon(Icons.email)),
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                          hintText: "Name",
+                          labelText: "Name",
+                          icon: Icon(Icons.person)),
+                    )
+                  ],
+                ),
+              ),
               Text('Header'),
               Text('Login'),
               Text('forget button'),
