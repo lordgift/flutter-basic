@@ -54,8 +54,15 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, constraint) => ShopListItem(
                   constraint.maxHeight,
                   productList[index],
-                  press: ()  {
+                  press: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      AppRoute.managementRoute,
+                      arguments: productList[index],
+                    );
+                    setState(() {
 
+                    });
                   },
                 ),
               ),
@@ -65,8 +72,14 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //todo
+        onPressed: () async {
+          await Navigator.pushNamed(
+            context,
+            AppRoute.managementRoute,
+          );
+          setState(() {
+
+          });
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
