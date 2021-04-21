@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_route.dart';
+import 'package:flutter_app/src/constants/app_setting.dart';
 import 'package:flutter_app/src/pages/login/background_theme.dart';
 import 'package:flutter_app/src/view_models/sso_viewmodel.dart';
+import 'package:flutter_app/src/constants/assets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   final _usernameController = TextEditingController();
@@ -63,13 +66,19 @@ class LoginPage extends StatelessWidget {
                     width: 280,
                     height: 52,
                     child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           print('login clicked!!');
                           final username = _usernameController.text;
                           final password = _passwordController.text;
 
                           if (username == "" && password == "") {
                             print("login ok");
+
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            var token = "abcdefghijklmnopqrstuvwxyz";
+                            await prefs.setString(AppSetting.tokenSetting, token);
+                            await prefs.setString(AppSetting.usernameString, username);
+
                             Navigator.pushReplacementNamed(context, AppRoute.homeRoute);
                           } else {
                             print("Invalid password");
