@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_route.dart';
+import 'package:flutter_app/src/constants/assets.dart';
 import 'package:flutter_app/src/pages/login/background_theme.dart';
 import 'package:flutter_app/src/view_models/menu_viewmodel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,8 +21,16 @@ class _HomePageState extends State<HomePage> {
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
+          childAspectRatio: 0.8
         ),
-        itemBuilder: (context, index) => ShopListItem(200),
+        itemBuilder: (context, index) => LayoutBuilder(
+            builder: (context, constaint) => ShopListItem(
+              constaint.maxHeight,
+              press: () {
+                //todo
+              },
+            )
+        ),
         itemCount: 100,
       ),
       floatingActionButton: FloatingActionButton(
@@ -69,6 +78,9 @@ class CommonDrawer extends StatelessWidget {
           Spacer(),
           ListTile(
             onTap: () {
+
+//todo logout
+
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoute.loginRoute, (route) => false);
             },
@@ -139,7 +151,7 @@ class ShopListItem extends StatelessWidget {
   );
 
   Stack _buildImage() {
-    final height = maxHeight - 75;
+    final height = maxHeight * 0.7;
     final productImage =
         'https://shortrecap.co/wp-content/uploads/2020/05/Catcover_web.jpg';
     return Stack(
@@ -152,7 +164,7 @@ class ShopListItem extends StatelessWidget {
           fit: BoxFit.cover,
         )
             : Image.asset(
-          'xxx',
+          Asset.noPhotoImage,
           height: height,
           width: double.infinity,
         ),

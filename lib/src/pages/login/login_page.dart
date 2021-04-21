@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
                   height: 48,
                 ),
                 Image.asset(
-                  "assets/images/flutter.png",
+                  Asset.logoImage,
                   width: 300,
                 ),
                 Stack(alignment: Alignment.bottomCenter, children: [
