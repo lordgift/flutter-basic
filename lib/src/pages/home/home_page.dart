@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_route.dart';
+import 'package:flutter_app/src/constants/api.dart';
 import 'package:flutter_app/src/constants/app_setting.dart';
 import 'package:flutter_app/src/constants/assets.dart';
 import 'package:flutter_app/src/models/product_response.dart';
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) => LayoutBuilder(
                   builder: (context, constaint) => ShopListItem(
                         constaint.maxHeight,
+                        productList[index],
                         press: () {
                           //todo
                         },
@@ -108,8 +110,9 @@ class CommonDrawer extends StatelessWidget {
 class ShopListItem extends StatelessWidget {
   final Function press;
   final double maxHeight;
+  final ProductResponse product;
 
-  const ShopListItem(this.maxHeight, {Key key, this.press}) : super(key: key);
+  const ShopListItem(this.maxHeight, this.product, {Key key, this.press}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +139,7 @@ class ShopListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'ชื่อสินค้า',
+              product.name,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             ),
@@ -144,13 +147,13 @@ class ShopListItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  '\$ ราคาสินค้า',
+                  '\$ ${product.price}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  'จำนวน',
+                  "${product.stock} item",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.deepOrangeAccent,
@@ -164,13 +167,12 @@ class ShopListItem extends StatelessWidget {
 
   Stack _buildImage() {
     final height = maxHeight * 0.7;
-    final productImage =
-        'https://shortrecap.co/wp-content/uploads/2020/05/Catcover_web.jpg';
+    final productImage = product.image;
     return Stack(
       children: [
         productImage != null && productImage.isNotEmpty
             ? Image.network(
-                productImage,
+                "${API.IMAGE_URL}/$productImage",
                 height: height,
                 width: double.infinity,
                 fit: BoxFit.cover,
