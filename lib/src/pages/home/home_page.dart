@@ -25,29 +25,45 @@ class _HomePageState extends State<HomePage> {
         title: Text('Home Page'),
       ),
       body: FutureBuilder<List<ProductResponse>>(
-          future: NetworkService().productAll(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-            final productList = snapshot.data;
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, childAspectRatio: 0.8, mainAxisSpacing: 4, crossAxisSpacing: 4),
-              itemBuilder: (context, index) => LayoutBuilder(
-                  builder: (context, constaint) => ShopListItem(
-                        constaint.maxHeight,
-                        productList[index],
-                        press: () {
-                          //todo
-                        },
-                      )),
-              itemCount: productList.length,
+        future: NetworkService().productAll(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
             );
-          }),
+          }
+          if(snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          final productList = snapshot.data;
+          return RefreshIndicator(
+            onRefresh: () async {
+              setState(() {
+
+              });
+            },
+            child: GridView.builder(
+              padding: EdgeInsets.all(4),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.8,
+                mainAxisSpacing: 4,
+                crossAxisSpacing: 4,
+              ),
+              itemBuilder: (context, index) => LayoutBuilder(
+                builder: (context, constraint) => ShopListItem(
+                  constraint.maxHeight,
+                  productList[index],
+                  press: ()  {
+
+                  },
+                ),
+              ),
+              itemCount: productList.length,
+            ),
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //todo
