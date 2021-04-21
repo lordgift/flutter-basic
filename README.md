@@ -25,3 +25,4 @@ samples, guidance on mobile development, and a full API reference.
 - ```=>``` : arrow sign mean return
 - ```onPressed``` : if no function assigned, it'll automatic disable state.
 - use ```{}``` cover arguments for optional argument(s)
+- ```..``` chaining call function (like builder)
