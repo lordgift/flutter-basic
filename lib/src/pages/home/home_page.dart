@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
             final productList = snapshot.data;
             return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, childAspectRatio: 0.8),
+                  crossAxisCount: 2, childAspectRatio: 0.8, mainAxisSpacing: 4, crossAxisSpacing: 4),
               itemBuilder: (context, index) => LayoutBuilder(
                   builder: (context, constaint) => ShopListItem(
                         constaint.maxHeight,
