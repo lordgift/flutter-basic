@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_route.dart';
+import 'package:flutter_app/src/constants/app_setting.dart';
 import 'package:flutter_app/src/constants/assets.dart';
 import 'package:flutter_app/src/pages/login/background_theme.dart';
 import 'package:flutter_app/src/view_models/menu_viewmodel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -77,10 +79,9 @@ class CommonDrawer extends StatelessWidget {
               .toList(),
           Spacer(),
           ListTile(
-            onTap: () {
-
-//todo logout
-
+            onTap: () async {
+              var prefs = await SharedPreferences.getInstance();
+              await prefs.remove(AppSetting.tokenSetting);
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoute.loginRoute, (route) => false);
             },
