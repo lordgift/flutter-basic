@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_route.dart';
 import 'package:flutter_app/src/constants/app_setting.dart';
 import 'package:flutter_app/src/constants/assets.dart';
+import 'package:flutter_app/src/models/product_response.dart';
 import 'package:flutter_app/src/pages/login/background_theme.dart';
+import 'package:flutter_app/src/service/network.dart';
 import 'package:flutter_app/src/view_models/menu_viewmodel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,21 +22,29 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Home Page'),
       ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.8
-        ),
-        itemBuilder: (context, index) => LayoutBuilder(
-            builder: (context, constaint) => ShopListItem(
-              constaint.maxHeight,
-              press: () {
-                //todo
-              },
-            )
-        ),
-        itemCount: 100,
-      ),
+      body: FutureBuilder<List<ProductResponse>>(
+          future: NetworkService().productAll(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            final productList = snapshot.data;
+            return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, childAspectRatio: 0.8),
+              itemBuilder: (context, index) => LayoutBuilder(
+                  builder: (context, constaint) => ShopListItem(
+                        constaint.maxHeight,
+                        press: () {
+                          //todo
+                        },
+                      )),
+              itemCount: productList.length,
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //todo
@@ -67,15 +77,15 @@ class CommonDrawer extends StatelessWidget {
           ...MenuViewModel()
               .items
               .map((e) => ListTile(
-            onTap: () {
-              e.onTap(context);
-            },
-            leading: Icon(
-              e.icon,
-              color: e.iconColor,
-            ),
-            title: Text(e.title),
-          ))
+                    onTap: () {
+                      e.onTap(context);
+                    },
+                    leading: Icon(
+                      e.icon,
+                      color: e.iconColor,
+                    ),
+                    title: Text(e.title),
+                  ))
               .toList(),
           Spacer(),
           ListTile(
@@ -119,37 +129,37 @@ class ShopListItem extends StatelessWidget {
   }
 
   Padding _buildInfo() => Padding(
-    padding: EdgeInsets.all(6),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'ชื่อสินค้า',
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
-        ),
-        Row(
+        padding: EdgeInsets.all(6),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              '\$ ราคาสินค้า',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              'ชื่อสินค้า',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
             ),
-            Text(
-              'จำนวน',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.deepOrangeAccent,
-              ),
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  '\$ ราคาสินค้า',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'จำนวน',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepOrangeAccent,
+                  ),
+                )
+              ],
+            ),
           ],
         ),
-      ],
-    ),
-  );
+      );
 
   Stack _buildImage() {
     final height = maxHeight * 0.7;
@@ -159,48 +169,48 @@ class ShopListItem extends StatelessWidget {
       children: [
         productImage != null && productImage.isNotEmpty
             ? Image.network(
-          productImage,
-          height: height,
-          width: double.infinity,
-          fit: BoxFit.cover,
-        )
+                productImage,
+                height: height,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              )
             : Image.asset(
-          Asset.noPhotoImage,
-          height: height,
-          width: double.infinity,
-        ),
+                Asset.noPhotoImage,
+                height: height,
+                width: double.infinity,
+              ),
         0 > 1
             ? SizedBox()
             : Positioned(
-          top: 1,
-          right: 1,
-          child: Card(
-            color: Colors.white70,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 4,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    FontAwesomeIcons.box,
-                    size: 15.0,
-                    color: Colors.black,
-                  ),
-                  SizedBox(width: 4),
-                  Text(
-                    'out of stock',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                top: 1,
+                right: 1,
+                child: Card(
+                  color: Colors.white70,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.box,
+                          size: 15.0,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          'out of stock',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
       ],
     );
   }
