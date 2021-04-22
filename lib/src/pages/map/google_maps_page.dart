@@ -1,5 +1,9 @@
 import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_app/src/constants/assets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GoogleMapPage extends StatefulWidget {
@@ -11,7 +15,7 @@ class GoogleMapPageState extends State<GoogleMapPage> {
   Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(13.6972552, 100.5131413),
     zoom: 14.4746,
   );
 
@@ -37,7 +41,7 @@ class GoogleMapPageState extends State<GoogleMapPage> {
         children: [
           GoogleMap(
             markers: _marker,
-            mapType: MapType.hybrid,
+            mapType: MapType.normal,
             initialCameraPosition: _kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
@@ -57,15 +61,72 @@ class GoogleMapPageState extends State<GoogleMapPage> {
   Future<void> _pinMarker() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_codeMobile));
-    dummyData.forEach((element) {
-      final marker = Marker(
-        markerId: MarkerId(element.toString()),
-        position: element,
-      );
-      _marker.add(marker);
-      setState(() {
 
-      });
+    for (var latLng in dummyData) {
+      await _addMarker(latLng, title: "xx", snippet: "yy", isShowInfo: true);
+    }
+
+    setState(() {
+
     });
+    // dummyData.forEach((element) {
+    //   final marker = Marker(
+    //     markerId: MarkerId(element.toString()),
+    //     position: element,
+    //   );
+    //   _marker.add(marker);
+    //   setState(() {
+    //
+    //   });
+    // });
   }
+  Future<Uint8List> getBytesFromAsset(String path, double height) async {
+    final byteData = await rootBundle.load(path);
+    final codec = await instantiateImageCodec(
+      byteData.buffer.asUint8List(),
+      targetHeight: height.toInt(),
+    );
+    final frameInfo = await codec.getNextFrame();
+    final image = await frameInfo.image.toByteData(format: ImageByteFormat.png);
+    return image.buffer.asUint8List();
+  }
+
+  Future<void> _addMarker(
+      LatLng position, {
+        String title = 'none',
+        String snippet = 'none',
+        String pinAsset = Asset.pinBikerImage,
+        bool isShowInfo = false,
+      }) async {
+    final byteData = await getBytesFromAsset(
+      pinAsset,
+      MediaQuery.of(context).size.height * 0.2,
+    );
+
+    final bitmapDescriptor = BitmapDescriptor.fromBytes(byteData);
+
+    final marker = Marker(
+      // important. unique id
+      markerId: MarkerId(position.toString()),
+      position: position,
+      infoWindow: isShowInfo
+          ? InfoWindow(
+        title: title,
+        snippet: snippet,
+        onTap: () {
+          // _launchMaps(
+          //   position.latitude,
+          //   position.longitude,
+          // );
+        },
+      )
+          : null,
+      icon: bitmapDescriptor,
+      onTap: () {
+        print('lat: ${position.latitude}, lng: ${position.longitude}');
+      },
+    );
+    _marker.add(marker);
+  }
+
 }
