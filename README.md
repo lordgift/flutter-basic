@@ -36,3 +36,5 @@ iOS need to add following permission into :Info.plist
 <key>NSLocationAlwaysUsageDescription</key>
 <string>ขอใช้เหอะ</string>
 ```
+
+- [URL luncher](https://pub.dev/packages/url_launcher/versions/6.0.3)
