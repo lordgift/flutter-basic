@@ -26,3 +26,4 @@ samples, guidance on mobile development, and a full API reference.
 - ```onPressed``` : if no function assigned, it'll automatic disable state.
 - use ```{}``` cover arguments for optional argument(s)
 - ```..``` chaining call function (like builder)
+- [Maps API](https://developers.google.com/maps) key need to set into platforms. [Google Maps for Flutter](https://pub.dev/packages/google_maps_flutter)
