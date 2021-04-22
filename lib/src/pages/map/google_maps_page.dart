@@ -23,6 +23,7 @@ class GoogleMapPageState extends State<GoogleMapPage> {
   final dummyData = List<LatLng>();
   final _marker = Set<Marker>();
   bool _permissionGranted;
+  StreamSubscription<LocationData> _locationSubscription;
 
   static final CameraPosition _codeMobile = CameraPosition(
       target: LatLng(13.6972552, 100.5131413), zoom:13);
@@ -57,6 +58,7 @@ class GoogleMapPageState extends State<GoogleMapPage> {
             mapType: MapType.normal,
             initialCameraPosition: _initMap,
             trafficEnabled: true,
+            myLocationEnabled: _permissionGranted,
             myLocationButtonEnabled: _permissionGranted,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
@@ -64,10 +66,17 @@ class GoogleMapPageState extends State<GoogleMapPage> {
           ),
           Positioned(
               left: 0,
-              child: ElevatedButton.icon(
-                  onPressed: _pinMarker,
-                  icon: Icon(Icons.pin_drop),
-                  label: Text("Pin Biker")))
+              child: Row(
+                children: [
+                  SizedBox(width: 8),
+                  ElevatedButton.icon(
+                      onPressed: _pinMarker,
+                      icon: Icon(Icons.pin_drop),
+                      label: Text("Pin Biker")),
+                  SizedBox(width: 8),
+                  _buildTrackingButton()
+                ],
+              )),
         ],
       ),
     );
@@ -143,5 +152,85 @@ class GoogleMapPageState extends State<GoogleMapPage> {
     );
     _marker.add(marker);
   }
+  ElevatedButton _buildTrackingButton() {
+    final isTracking = _locationSubscription != null;
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        primary: isTracking ? Colors.red : Colors.purpleAccent,
+      ),
+      onPressed: () {
+        _trackingLocation();
+      },
+      label: Text(isTracking ? 'Stop tracking' : 'Start tracking'),
+      icon: Icon(Icons.alt_route),
+    );
+  }
 
+  void _trackingLocation() async {
+    if (_locationSubscription != null) {
+      setState(() {
+        _locationSubscription.cancel();
+        _locationSubscription = null;
+        _marker?.clear();
+      });
+      return;
+    }
+
+    final locationService = Location();
+    await locationService.changeSettings(
+      accuracy: LocationAccuracy.high,
+      interval: 1000,
+      distanceFilter: 100,
+    ); // meters.
+
+    try {
+      final serviceEnabled = await locationService.serviceEnabled();
+      if (!serviceEnabled) {
+        bool serviceStatusResult = await locationService.requestService();
+        print("Service status activated after request: $serviceStatusResult");
+        if (serviceStatusResult) {
+          _trackingLocation();
+        } else {
+          print('Service denied');
+        }
+        return;
+      }
+
+      final granted =
+          await locationService.requestPermission() == PermissionStatus.granted;
+
+      if (!granted) {
+        print('Permission denied');
+        return;
+      }
+
+      _locationSubscription = locationService.onLocationChanged.listen(
+            (LocationData result) async {
+          _marker?.clear();
+          final latLng = LatLng(result.latitude, result.longitude);
+          await _addMarker(
+            latLng,
+            pinAsset: Asset.pinMarkerImage,
+          );
+          setState(() {
+            _animateCamera(latLng);
+          });
+        },
+      );
+    } on PlatformException catch (e) {
+      print('trackingLocation error: ${e.message}');
+      if (e.code == 'PERMISSION_DENIED') {
+        return print('Permission denied');
+      }
+      if (e.code == 'SERVICE_STATUS_ERROR') {
+        return print('Service error');
+      }
+    }
+  }
+
+  Future<void> _animateCamera(LatLng position) async {
+    _controller.future.then((controller) {
+      controller.animateCamera(CameraUpdate.newLatLngZoom(position, 16));
+    });
+  }
 }
