@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/constants/assets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class GoogleMapPage extends StatefulWidget {
   @override
@@ -14,13 +15,14 @@ class GoogleMapPage extends StatefulWidget {
 class GoogleMapPageState extends State<GoogleMapPage> {
   Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  static final CameraPosition _initMap = CameraPosition(
     target: LatLng(13.6972552, 100.5131413),
     zoom: 14.4746,
   );
 
   final dummyData = List<LatLng>();
   final _marker = Set<Marker>();
+  bool _permissionGranted;
 
   static final CameraPosition _codeMobile = CameraPosition(
       target: LatLng(13.6972552, 100.5131413), zoom:13);
@@ -30,9 +32,20 @@ class GoogleMapPageState extends State<GoogleMapPage> {
     dummyData.add(LatLng(13.6972552,100.5131413));
     dummyData.add(LatLng(13.7029927,100.543399));
     dummyData.add(LatLng(13.6990459,100.5382859));
+    _requestLocationPermission();
     super.initState();
   }
-
+  void _requestLocationPermission() async {
+    try {
+      _permissionGranted =
+          await Location().requestPermission() == PermissionStatus.granted;
+      setState(() {});
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        return print('Permission denied');
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -42,7 +55,9 @@ class GoogleMapPageState extends State<GoogleMapPage> {
           GoogleMap(
             markers: _marker,
             mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
+            initialCameraPosition: _initMap,
+            trafficEnabled: true,
+            myLocationButtonEnabled: _permissionGranted,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },

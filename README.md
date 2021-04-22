@@ -27,3 +27,12 @@ samples, guidance on mobile development, and a full API reference.
 - use ```{}``` cover arguments for optional argument(s)
 - ```..``` chaining call function (like builder)
 - [Maps API](https://developers.google.com/maps) key need to set into platforms. [Google Maps for Flutter](https://pub.dev/packages/google_maps_flutter)
+- [Flutter Location Plugin](https://pub.dev/packages/location) iOS need
+
+iOS need to add following permission into :Info.plist
+```
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>ขอใช้หน่อย</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>ขอใช้เหอะ</string>
+```
