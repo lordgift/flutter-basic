@@ -38,3 +38,9 @@ iOS need to add following permission into :Info.plist
 ```
 
 - [URL luncher](https://pub.dev/packages/url_launcher/versions/6.0.3)
+- generate app icons
+```
+$ flutter pub run flutter_launcher_icons:main
+```
+
+
