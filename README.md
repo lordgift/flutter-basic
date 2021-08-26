@@ -44,3 +44,7 @@ $ flutter pub run flutter_launcher_icons:main
 ```
 
 
+For generate /android, /ios, /web directories
+```
+flutter create .
+```
